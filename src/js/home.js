@@ -1,5 +1,6 @@
 
 const programs = ["mysql", "python", "code", "npm", "node"];
+const programNames = ["MySQL", "Python", "VSCode", "NPM", "Node"];
 
 function isProgramInstalled(program) {
 	return new Promise((resolve, _) => {
@@ -39,12 +40,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   const programContainer = document.getElementsByClassName("program-version-box")[0];
 
-  for (const program of programs) {
-
-    const results = await isProgramInstalled(program);
+  for (let i = 0; i < programs.length; i++) {
+    const results = await isProgramInstalled(programs[i]);
 
     let node = document.createElement("p");
-    node.innerHTML = `<strong>${program}:</strong> ${results.installed ? results.version : "Pas installé"}`;
+    node.innerHTML = `<strong>${programNames[i]}:</strong> ${results.installed ? results.version : "Pas installé"}`;
 
     programContainer.append(node);
   }

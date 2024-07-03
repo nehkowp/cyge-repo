@@ -96,8 +96,9 @@ function main() {
         if (err) {
           console.error(err);
           event.reply('signup-response', { success: false, message: 'Database error' });
-        } else if (results.length > 0) {
-          const user = results[0];
+        } else{
+          const user = {nom, prenom, login, password, lang};
+          console.log(user);
           event.reply('signup-response', { success: true, message: 'Login successful', user });
   
           // Chargez la page de profil utilisateur avec les informations de l'utilisateur
@@ -107,11 +108,8 @@ function main() {
           win.webContents.once('did-finish-load', () => {
             win.webContents.send('user-profile', user);
           });
-        } else {
-          event.reply('signup-response',{ success: false, message: 'Invalid session' });
         }
         connection.end();
-        win.loadURL(`file://${__dirname}/src/screens/home.html`);
       }
     );
   });

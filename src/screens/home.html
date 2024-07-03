@@ -3,9 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <link href="../style/home.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="../assets/icon.png" />
+    <title>Accueil | Visiteur</title>
 </head>
 <body>
-    Welcome to your home page
-</body>
+<div class="container" id="container">
+	<div class="home-container program-version-container">
+			<h1>Vos programmes installés</h1>
+			<div class="program-version-box">
+
+            </div>
+	</div>
+	<div class="home-container sign-in-container">
+		<h1>Vos informations</h1>
+        <div class="user-info-box">
+
+        </div>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Re-Bonjour !</h1>
+				<p>Es-tu sur d'avoir rentré les bonnes informations ? Vérifie en regardant tes informations personnelles en cliquant sur le bouton ci-dessous ,tu peux modifier ces données à tout moment en cliquant sur les Paramètres.</p>
+				<button class="ghost" id="showUser">Voir Informations</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>Bienvenue Zak !</h1>
+				<p>Tu veux voir si tout est à jour sur ton ordinateur ? Vérifie grâce en cliquant sur le bouton ci-dessous pour voir l'état de tes différents logiciels </p>
+				<button class="ghost" id="showVersion">Voir Versions</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="../js/home.js"></script>
+</body> 
 </html>

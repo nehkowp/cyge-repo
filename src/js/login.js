@@ -13,9 +13,11 @@ signInButton.addEventListener('click', () => {
 const loginForm = document.getElementById('signInForm');
     loginForm.addEventListener('submit', (event) => {
       event.preventDefault();
-      const login = document.getElementById('login').value;
-      const password = document.getElementById('password').value;
+      const login = document.getElementById('login_si').value;
+      const password = document.getElementById('password_si').value;
       window.electronAPI.submitSignIn(login, password);
+      window.loadUrl(`src/screens/home.html`);
+
     });
 
     window.electronAPI.onLoginResponse((event, response) => {
@@ -31,6 +33,8 @@ const loginForm = document.getElementById('signInForm');
       const password = document.getElementById('password_su').value;
       const lang = document.getElementById('lang').value;
       window.electronAPI.submitSignUp(nom, prenom, login, password, lang);
+      window.loadUrl(`/src/screens/home.html`);
+
     });
 
     window.electronAPI.onSignUpResponse((event, response) => {

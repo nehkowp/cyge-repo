@@ -4,7 +4,6 @@ const mysql = require('mysql2');
 require('dotenv').config();
 
 
-
 function setupDb() {
   const connection = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -28,8 +27,8 @@ function setupDb() {
   return connection;
 }
 
-
-function createWindow() {
+app.whenReady().then(() => 
+{
   const win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -41,9 +40,10 @@ function createWindow() {
   });
 
   win.loadFile('index.html');
-}
 
-app.whenReady().then(createWindow);
+
+}
+);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -75,6 +75,9 @@ ipcMain.on('submit-login', (event, { login, password }) => {
       }
 
       connection.end();
+      const win = window.getFocusedWindow();
+      win.loadUrl(`/src/screens/home.html`);
+
     }
   );
 });
@@ -93,8 +96,9 @@ ipcMain.on('submit-signup', (event, { nom, prenom, login, password, lang }) => {
       } else {
         event.reply('signup-response', { success: true, message: 'Profile created successfully' });
       }
-
       connection.end();
+      const win = window.getFocusedWindow();
+      win.loadUrl(`/src/screens/home.html`);
     }
   );
 });

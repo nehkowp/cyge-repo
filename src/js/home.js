@@ -3,9 +3,9 @@ const programs = ["mysql", "python", "code", "npm", "node"];
 
 function isProgramInstalled(program) {
 	return new Promise((resolve, _) => {
-    let process = exec(`${program} --version`);
-    process.on('error', () => resolve(false));
-    process.on('close', () => resolve(true));
+    window.electronAPI.childProcessExec(`${program} --version`, (err, stdout, stderr) => {
+      resolve({installed: err == null, version: stdout});
+    });
   });
 }
 
@@ -25,22 +25,28 @@ window.electronAPI.onUserProfile((event, user) => {
 document.addEventListener("DOMContentLoaded", async () => {
 
 
-    const signUpButton = document.getElementById('showUser');
-    const signInButton = document.getElementById('showVersion');
-    const container = document.getElementById('container');
-    
-    signUpButton.addEventListener('click', () => {
-        container.classList.add("right-panel-active");
-    });
-    
-    signInButton.addEventListener('click', () => {
-        container.classList.remove("right-panel-active");
-    });
-    
+  const signUpButton = document.getElementById('showUser');
+  const signInButton = document.getElementById('showVersion');
+  const container = document.getElementById('container');
+  
+  signUpButton.addEventListener('click', () => {
+      container.classList.add("right-panel-active");
+  });
+  
+  signInButton.addEventListener('click', () => {
+      container.classList.remove("right-panel-active");
+  });
+  
+  const programContainer = document.getElementsByClassName("program-version-box")[0];
 
-  // for (const program of programs) {
-  //   console.log(`Checking ${program}`);
-  //   console.log(`${program} installed: ${await isProgramInstalled(program)}`);
-  // }
+  for (const program of programs) {
+
+    const results = await isProgramInstalled(program);
+
+    let node = document.createElement("p");
+    node.innerHTML = `${program}: ${results.installed ? results.version : "Pas installé"}`;
+
+    programContainer.append(node);
+  }
 
 }, false);

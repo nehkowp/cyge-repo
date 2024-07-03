@@ -3,6 +3,32 @@ const path = require('path');
 const mysql = require('mysql2');
 require('dotenv').config();
 
+
+
+function setupDb() {
+  const connection = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+  });
+
+  connection.connect();
+
+  connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
+  connection.query(`use ${process.env.DB_NAME}`);
+  
+  connection.query(`CREATE TABLE IF NOT EXISTS users (
+    nom MEDIUMTEXT,
+    prenom MEDIUMTEXT,
+    login MEDIUMTEXT,
+    password MEDIUMTEXT,
+    lang MEDIUMTEXT
+  )`);
+
+  return connection;
+}
+
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
@@ -33,14 +59,7 @@ app.on('activate', () => {
 
 // Gestion de la soumission du formulaire de connexion
 ipcMain.on('submit-login', (event, { login, password }) => {
-  const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  });
-
-  connection.connect();
+  const connection = setupDb();
 
   connection.query(
     'SELECT * FROM users WHERE login = ? AND password = ?',
@@ -62,15 +81,8 @@ ipcMain.on('submit-login', (event, { login, password }) => {
 
 
 ipcMain.on('submit-signup', (event, { nom, prenom, login, password, lang }) => {
-  const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  });
-
-  connection.connect();
-
+  const connection = setupDb();
+  
   connection.query(
     'INSERT INTO users (nom, prenom, login, password, lang) VALUES (?, ?, ?, ?, ?)',
     [nom, prenom, login, password, lang],

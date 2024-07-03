@@ -1,12 +1,26 @@
 {
   "name": "cyge-electron-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "npm init -y",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
   "devDependencies": {
-    "electron": "^latest-version"
+    "electron": "^31.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nehkowp/cyge-repo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nehkowp/cyge-repo/issues"
+  },
+  "homepage": "https://github.com/nehkowp/cyge-repo#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5"
   }
 }

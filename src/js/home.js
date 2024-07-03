@@ -25,8 +25,8 @@ window.electronAPI.onUserProfile((event, user) => {
 document.addEventListener("DOMContentLoaded", async () => {
 
 
-  const signUpButton = document.getElementById('showUser');
-  const signInButton = document.getElementById('showVersion');
+  const signUpButton = document.getElementById('showVersion');
+  const signInButton = document.getElementById('showUser');
   const container = document.getElementById('container');
   
   signUpButton.addEventListener('click', () => {

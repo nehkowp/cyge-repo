@@ -14,8 +14,8 @@ window.electronAPI.onUserProfile((event, user) => {
   profileDiv.innerHTML = `
     <p><strong>Nom:</strong> ${user.nom}</p>
     <p><strong>Prénom:</strong> ${user.prenom}</p>
-    <p><strong>Login:</strong> ${user.login}</p>
-    <p><strong>Lang:</strong> ${user.lang}</p>
+    <p><strong>Mot de passe:</strong> •••••••••••</p>
+    <p><strong>Langage Préféré:</strong> ${user.lang}</p>
   `;
   document.title = `Accueil | ${user.prenom}`;
   const overlayPanel = document.querySelector('.overlay-panel.overlay-right h1');

@@ -23,7 +23,9 @@ const loginForm = document.getElementById('signInForm');
     });
 
     window.electronAPI.onLoginResponse((event, response) => {
-      alert(response.message);
+      if (!response.success) {
+        alert(response.message);
+      }
     });
 
     const signUpForm = document.getElementById('signUpForm');
@@ -42,6 +44,8 @@ const loginForm = document.getElementById('signInForm');
     });
 
     window.electronAPI.onSignUpResponse((event, response) => {
-      alert(response.message);
+      if (!response.success) {
+        alert(response.message);
+      }
     });
     

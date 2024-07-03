@@ -1,2 +1,4 @@
 # cyge-repo
-test
+npm init -y
+
+npm install electron --save-dev

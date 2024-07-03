@@ -15,7 +15,7 @@ const loginForm = document.getElementById('signInForm');
       event.preventDefault();
       const login = document.getElementById('login').value;
       const password = document.getElementById('password').value;
-      window.electronAPI.submitLogin(login, password);
+      window.electronAPI.submitSignIn(login, password);
     });
 
     window.electronAPI.onLoginResponse((event, response) => {

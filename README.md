@@ -1,4 +1,6 @@
 # cyge-repo
-npm init -y
 
-npm install electron --save-dev
+npm install 
+
+Download MySQL :  https://dev.mysql.com/downloads/file/?id=529732
+

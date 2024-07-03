@@ -59,3 +59,30 @@ ipcMain.on('submit-login', (event, { login, password }) => {
     }
   );
 });
+
+
+ipcMain.on('submit-signup', (event, { nom, prenom, login, password, lang }) => {
+  const connection = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  });
+
+  connection.connect();
+
+  connection.query(
+    'INSERT INTO users (nom, prenom, login, password, lang) VALUES (?, ?, ?, ?, ?)',
+    [nom, prenom, login, password, lang],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        event.reply('signup-response', { success: false, message: 'Database error' });
+      } else {
+        event.reply('signup-response', { success: true, message: 'Profile created successfully' });
+      }
+
+      connection.end();
+    }
+  );
+});

@@ -4,7 +4,7 @@ const programs = ["mysql", "python", "code", "npm", "node"];
 function isProgramInstalled(program) {
 	return new Promise((resolve, _) => {
     window.electronAPI.childProcessExec(`${program} --version`, (err, stdout, stderr) => {
-      resolve({installed: err == null, version: stdout});
+      resolve({installed: err == null, version: stdout.match(/\d+\.\d+\.\d+/g)});
     });
   });
 }
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const results = await isProgramInstalled(program);
 
     let node = document.createElement("p");
-    node.innerHTML = `${program}: ${results.installed ? results.version : "Pas installé"}`;
+    node.innerHTML = `<strong>${program}:</strong> ${results.installed ? results.version : "Pas installé"}`;
 
     programContainer.append(node);
   }

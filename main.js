@@ -65,14 +65,21 @@ function main() {
           console.error(err);
           event.reply('login-response', { success: false, message: 'Database error' });
         } else if (results.length > 0) {
-          event.reply('login-response', { success: true, message: 'Login successful' });
+          const user = results[0];
+          event.reply('login-response', { success: true, message: 'Login successful', user });
+  
+          // Chargez la page de profil utilisateur avec les informations de l'utilisateur
+          win.loadURL(`file://${__dirname}/src/screens/home.html`);
+  
+          // Écoutez lorsque la page est prête pour envoyer les informations de l'utilisateur
+          win.webContents.once('did-finish-load', () => {
+            win.webContents.send('user-profile', user);
+          });
         } else {
           event.reply('login-response', { success: false, message: 'Invalid login or password' });
         }
   
         connection.end();
-        win.loadURL(`file://${__dirname}/src/screens/home.html`);
-  
       }
     );
   });
@@ -88,8 +95,19 @@ function main() {
         if (err) {
           console.error(err);
           event.reply('signup-response', { success: false, message: 'Database error' });
+        } else if (results.length > 0) {
+          const user = results[0];
+          event.reply('signup-response', { success: true, message: 'Login successful', user });
+  
+          // Chargez la page de profil utilisateur avec les informations de l'utilisateur
+          win.loadURL(`file://${__dirname}/src/screens/home.html`);
+  
+          // Écoutez lorsque la page est prête pour envoyer les informations de l'utilisateur
+          win.webContents.once('did-finish-load', () => {
+            win.webContents.send('user-profile', user);
+          });
         } else {
-          event.reply('signup-response', { success: true, message: 'Profile created successfully' });
+          event.reply('signup-response',{ success: false, message: 'Invalid session' });
         }
         connection.end();
         win.loadURL(`file://${__dirname}/src/screens/home.html`);

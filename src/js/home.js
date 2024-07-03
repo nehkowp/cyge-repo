@@ -9,11 +9,24 @@ function isProgramInstalled(program) {
   });
 }
 
+window.electronAPI.onUserProfile((event, user) => {
+  const profileDiv = document.getElementById('user-info-box');
+  profileDiv.innerHTML = `
+    <p><strong>Nom:</strong> ${user.nom}</p>
+    <p><strong>Prénom:</strong> ${user.prenom}</p>
+    <p><strong>Login:</strong> ${user.login}</p>
+    <p><strong>Lang:</strong> ${user.lang}</p>
+  `;
+  document.title = `Accueil | ${user.prenom}`;
+  const overlayPanel = document.querySelector('.overlay-panel.overlay-right h1');
+  overlayPanel.textContent = `Bienvenue ${user.prenom} !`;
+});
+
 document.addEventListener("DOMContentLoaded", async () => {
 
 
-    const signUpButton = document.getElementById('showVersion');
-    const signInButton = document.getElementById('showUser');
+    const signUpButton = document.getElementById('showUser');
+    const signInButton = document.getElementById('showVersion');
     const container = document.getElementById('container');
     
     signUpButton.addEventListener('click', () => {
@@ -25,9 +38,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     
 
-  for (const program of programs) {
-    console.log(`Checking ${program}`);
-    console.log(`${program} installed: ${await isProgramInstalled(program)}`);
-  }
+  // for (const program of programs) {
+  //   console.log(`Checking ${program}`);
+  //   console.log(`${program} installed: ${await isProgramInstalled(program)}`);
+  // }
 
 }, false);

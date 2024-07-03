@@ -30,8 +30,7 @@ function setupDb() {
 
 function main() {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
@@ -39,6 +38,7 @@ function main() {
       enableRemoteModule: false,
     }
   });
+  win.maximize();
   
   win.loadFile('index.html');
 

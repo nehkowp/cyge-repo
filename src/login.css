@@ -50,7 +50,7 @@ a {
 	margin: 15px 0;
 }
 
-#submit_btn, button {
+#submit_btn_su, #submit_btn_si, button {
 	border-radius: 20px;
 	border: 1px solid #FF4B2B;
 	background-color: #FF4B2B;
@@ -63,15 +63,15 @@ a {
 	transition: transform 80ms ease-in;
 }
 
-#submit_btn:active, button:active {
+#submit_btn_su:active, #submit_btn_si:active, button:active {
 	transform: scale(0.95);
 }
 
-#submit_btn:focus, button:focus {
+#submit_btn_su:focus, #submit_btn_si:focus, button:focus{
 	outline: none;
 }
 
-#submit_btn.ghost, button.ghost{
+#submit_btn_su.ghost, #submit_btn_si.ghost, button.ghost{
 	background-color: transparent;
 	border-color: #FFFFFF;
 }

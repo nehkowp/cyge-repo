@@ -12,28 +12,32 @@
 	<div class="form-container sign-up-container">
         <form id="signUpForm">
 			<h1>Créer votre profil</h1>
-			<input type="text" id="voiture" name="voiture" placeholder="ex : Ferrari" required />
-			<input type="submit" class="bouton_submit" id="submit_btn" name="submit_btn"value="Rechercher">
+			<input type="text" name="nom" id="nom" placeholder="Nom" required />
+			<input type="text" name="prenom" id="prenom" placeholder="Prénom" required />
+			<input type="text" name="login" id="login_su" placeholder="Identifiant"/>
+			<input type="password" name="password" id="password_su" placeholder="Mot de Passe" required />
+			<input type="text" name="lang" id="lang" placeholder="ex : Python" required />
+			<input type="submit" id="submit_btn_su" name="submit_btn" class="bouton_submit" value="créer">
         </form>
 	</div>
 	<div class="form-container sign-in-container">
         <form id="signInForm">
 			<h1>Connexion</h1>
-			<input type="text" name="login" id="login" placeholder="Identifiant"/>
-			<input type="password" name="password" id="password" placeholder="Mot de Passe" />
-			<input type="submit" id="submit_btn" name="submit_btn"value="Envoyer">
+			<input type="text" name="login" id="login_si" placeholder="Identifiant"/>
+			<input type="password" name="password" id="password_si" placeholder="Mot de Passe" />
+			<input type="submit" id="submit_btn_si" name="submit_btn" value="se connecter">
 		</form>
 	</div>
 	<div class="overlay-container">
 		<div class="overlay">
 			<div class="overlay-panel overlay-left">
 				<h1>Re-Bonjour !</h1>
-				<p>Tu as déjà choisi ton équipe préférée, consulte les résultats de tes pilotes préférés et tes différents rivaux</p>
+				<p>Tu es déjà inscris ? Parfait, connecte-toi pour voir tes informations personnelles et les dernières mises à jour</p>
 				<button class="ghost" id="signIn">Se Connecter</button>
 			</div>
 			<div class="overlay-panel overlay-right">
-				<h1>Bienvenue, Pilote!</h1>
-				<p>Tu adores la Formule 1 et le monde qui gravite autour, inscris-toi pour être tenu au courant de toutes les dernières news sur ton équipe et ton pilote préféré</p>
+				<h1>Bienvenue !</h1>
+				<p>Tu es nouveau ? Inscris-toi pour profiter pleinement de l'expérience utilisateur avec des informations sur les différentes mises à jour de nos programmes et en renseignant des informations personelles</p>
 				<button class="ghost" id="signUp">S'incrire</button>
 			</div>
 		</div>

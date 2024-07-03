@@ -237,5 +237,13 @@ input {
 	flex-direction: column;
 }
 
+#user-info-box .info {
+  display: flex;
+}
 
-
+.icon {
+  width: 16px;
+  height: 16px;
+  margin: 20px 0 30px 10px;
+  cursor: pointer;
+}

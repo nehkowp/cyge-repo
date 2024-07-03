@@ -16,7 +16,9 @@ const loginForm = document.getElementById('signInForm');
       const login = document.getElementById('login_si').value;
       const password = document.getElementById('password_si').value;
       window.electronAPI.submitSignIn(login, password);
-      window.loadUrl(`src/screens/home.html`);
+      
+      let win = window.getFocusedWindow();
+      win.loadURL(`file://${__dirname}/src/screens/home.html`);
 
     });
 
@@ -33,7 +35,9 @@ const loginForm = document.getElementById('signInForm');
       const password = document.getElementById('password_su').value;
       const lang = document.getElementById('lang').value;
       window.electronAPI.submitSignUp(nom, prenom, login, password, lang);
-      window.loadUrl(`/src/screens/home.html`);
+      
+      let win = window.getFocusedWindow();
+      win.loadURL(`file://${__dirname}/src/screens/home.html`);
 
     });
 

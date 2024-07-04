@@ -13,9 +13,6 @@ function isProgramInstalled(program) {
 function updateUser(user) {
   const profileDiv = document.getElementById('user-info-box');
   profileDiv.innerHTML = `
-    <div class="info">
-      <p><strong>Identifiant:</strong> ${user.login}</p>
-    </div> 
     <div class="info" data-group="nom">
       <p><strong>Nom:</strong> ${user.nom}</p>
       <input type="text" value="${user.nom}" hidden>
@@ -26,6 +23,11 @@ function updateUser(user) {
       <input type="text" value="${user.prenom}" hidden>
       <img class="icon" data-group="prenom" src="../assets/pencil-solid.svg"/>
     </div>
+    <div class="info" data-group="login">
+      <p><strong>Identifiant:</strong> ${user.login}</p>
+      <input type="text" value="${user.login}" hidden>
+      <img class="icon" data-group="login" src="../assets/pencil-solid.svg"/>
+    </div> 
     <div class="info" data-group="password">
       <p><strong>Mot de passe:</strong> •••••••••••</p>
       <input type="text" hidden>
@@ -40,9 +42,10 @@ function updateUser(user) {
   document.title = `Accueil | ${user.login}`;
   const overlayPanel = document.querySelector('.overlay-panel.overlay-right h1');
   overlayPanel.textContent = `Bienvenue ${user.login} !`;
+  console.log(user);
   
   document.querySelectorAll(".info img[data-group]").forEach(button => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
       const group = button.getAttribute("data-group");
       const groupText = document.querySelector(`div.info[data-group="${group}"] p`);
       const groupInput = document.querySelector(`div.info[data-group="${group}"] input`);
@@ -54,12 +57,13 @@ function updateUser(user) {
             break;
         case "../assets/check-solid.svg":
             button.setAttribute("src", "../assets/pencil-solid.svg");
-            window.electronAPI.submitEdit(group, groupInput.value, user.login);
+            const data = group === "password" ? await window.electronAPI.hashPassword(groupInput.value) : groupInput.value;
+            window.electronAPI.submitEdit(group, data, user.id);
             window.electronAPI.onEditResponse((event, response) => {
               if (!response.success) {
                 alert(response.message);
               }else if (group !== "password") {
-                user[group] = groupInput.value;
+                user[group] = data;
                 updateUser(user);
               }
             });

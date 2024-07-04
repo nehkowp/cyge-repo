@@ -18,11 +18,13 @@ function setupDb() {
   connection.query(`use ${process.env.DB_NAME}`);
   
   connection.query(`CREATE TABLE IF NOT EXISTS users (
+    id MEDIUMINT NOT NULL AUTO_INCREMENT,
     nom MEDIUMTEXT NOT NULL,
     prenom MEDIUMTEXT NOT NULL,
-    login MEDIUMTEXT NOT NULL PRIMARY KEY,
+    login MEDIUMTEXT NOT NULL,
     password MEDIUMTEXT NOT NULL,
-    lang MEDIUMTEXT NOT NULL
+    lang MEDIUMTEXT NOT NULL,
+    PRIMARY KEY (id)
   )`);
 
   return connection;
@@ -98,7 +100,7 @@ function main() {
     const connection = setupDb();
     
     connection.query(
-      'INSERT INTO users (nom, prenom, login, password, lang) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO users (id, nom, prenom, login, password, lang) VALUES (NULL, ?, ?, ?, ?, ?)',
       [nom, prenom, login, password, lang],
       (err, results) => {
         if (err) {
@@ -136,22 +138,16 @@ function main() {
     return hashedPassword;
   });
 
-  ipcMain.on('submit-edit', async (event, { group, data, userLogin }) => {
+  ipcMain.on('submit-edit', async (event, { group, data, userid }) => {
     const connection = setupDb();
-    
-    
     let update = {};
-    console.log(group, data);
-    if (group === "password") {
-      console.log("p");
-      update[group] = await window.electronAPI.hashPassword(data);
-    } else {
-      update[group] = data;
-    }
+    update[group] = data;
+    console.log(userid, group, data, update);
     connection.query(
-      'UPDATE users SET ? WHERE login = ?',
-      [update, userLogin],
+      'UPDATE users SET ? WHERE id = ?',
+      [update, userid],
       async (err, results) => {
+        console.log("updated");
         if (err) {
           event.reply('edit-response', { success: false, message: "Impossible de modifier l'utilisateur" });
         } else {

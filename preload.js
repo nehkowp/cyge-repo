@@ -10,7 +10,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   sendLogout: (channel, data) => ipcRenderer.send(channel, data),
   hashPassword: (password) => ipcRenderer.invoke('hash-password', password),
   childProcessExec: child_process.exec,
-  submitEdit: (group, data, userLogin) => ipcRenderer.send('submit-edit', { group, data, userLogin }),
+  submitEdit: (group, data, userid) => ipcRenderer.send('submit-edit', { group, data, userid }),
   onEditResponse: (callback) => ipcRenderer.on('edit-response', callback),
 });
 

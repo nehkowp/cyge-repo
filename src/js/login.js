@@ -10,6 +10,7 @@ signInButton.addEventListener('click', () => {
 	container.classList.remove("right-panel-active");
 });
 
+// Partie Connexion qui envoie un mot de passe non hashé et un login pour se connecter avec submitSignIn
 const loginForm = document.getElementById('signInForm');
     loginForm.addEventListener('submit', async () => {
       event.preventDefault();
@@ -19,6 +20,7 @@ const loginForm = document.getElementById('signInForm');
       window.electronAPI.submitSignIn(login, password);
     });
 
+    //Renvoie sur l'accueil sinon message d'erreur
     window.electronAPI.onLoginResponse((event, response) => {
       if (!response.success) {
         alert(response.message);
@@ -28,7 +30,8 @@ const loginForm = document.getElementById('signInForm');
       }
     });
 
-    const signUpForm = document.getElementById('signUpForm');
+//Partie Création de compte , qui hash le mot de passe et envoie les données sur la BDD puis envoie sur l'accueil
+const signUpForm = document.getElementById('signUpForm');
     signUpForm.addEventListener('submit', async () => {
       event.preventDefault();
       const nom = document.getElementById('nom').value;

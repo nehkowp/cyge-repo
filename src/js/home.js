@@ -43,9 +43,9 @@ function updateUser(user) {
       <img class="icon" data-group="lang" src="../assets/pencil-solid.svg"/>
     </div>
   `;
-  document.title = `Accueil | ${user.login}`;
+  document.title = `Accueil | ${user.prenom}`;
   const overlayPanel = document.querySelector('.overlay-panel.overlay-right h1');
-  overlayPanel.textContent = `Bienvenue ${user.login} !`;
+  overlayPanel.textContent = `Bienvenue ${user.prenom} !`;
   
   // Gère les boutons modification du profile utilisateur
   document.querySelectorAll(".info img[data-group]").forEach(button => {

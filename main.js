@@ -16,7 +16,7 @@ function setupDb() {
 
   connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
   connection.query(`use ${process.env.DB_NAME}`);
-  
+
   connection.query(`CREATE TABLE IF NOT EXISTS users (
     id MEDIUMINT NOT NULL AUTO_INCREMENT,
     nom MEDIUMTEXT NOT NULL,

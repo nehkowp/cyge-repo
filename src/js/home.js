@@ -26,15 +26,22 @@ window.electronAPI.onUserProfile((event, user) => {
 document.addEventListener("DOMContentLoaded", async () => {
 
 
-  const signUpButton = document.getElementById('showVersion');
-  const signInButton = document.getElementById('showUser');
+  const showVersionButton = document.getElementById('showVersion');
+  const showUserButton = document.getElementById('showUser');
+  const logOutButton = document.getElementById('logOut');
   const container = document.getElementById('container');
   
-  signUpButton.addEventListener('click', () => {
+
+  logOutButton.addEventListener('click', () => {
+    window.electronAPI.sendLogout('log-out');
+  });
+
+
+  showVersionButton.addEventListener('click', () => {
       container.classList.add("right-panel-active");
   });
   
-  signInButton.addEventListener('click', () => {
+  showUserButton.addEventListener('click', () => {
       container.classList.remove("right-panel-active");
   });
   

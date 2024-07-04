@@ -113,6 +113,16 @@ function main() {
       }
     );
   });
+
+
+  ipcMain.on('log-out', (event) => {
+    let win = BrowserWindow.getFocusedWindow();
+    if (win) {
+      win.loadURL(`file://${__dirname}/index.html`);
+    }
+  });
+  
+
 }
 
 app.whenReady().then(main);

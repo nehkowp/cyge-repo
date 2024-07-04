@@ -254,3 +254,13 @@ input {
   margin: 20px 0 30px 10px;
   cursor: pointer;
 }
+
+.icon-logout {
+	position: absolute;
+	top:0;
+	right: 0;
+	width: 32px;
+	height: 32px;
+	margin: 40px 20px 40px 40px;
+	cursor: pointer;
+  }

@@ -7,5 +7,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   submitSignUp: (nom, prenom, login, password, lang) => ipcRenderer.send('submit-signup', { nom, prenom, login, password, lang }),
   onSignUpResponse: (callback) => ipcRenderer.on('signup-response', callback),
   onUserProfile: (callback) => ipcRenderer.on('user-profile', callback),
+  sendLogout: (channel, data) => ipcRenderer.send(channel, data),
+  receiveLogout: (channel, func) => ipcRenderer.on(channel, (event, ...args) => func(...args)),
   childProcessExec: child_process.exec,
 });
+

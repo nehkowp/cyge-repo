@@ -15,7 +15,7 @@ You will also need MySQL for the database, you can install it from [here](https:
 
 ## Configuration
 
-After the install and a complete setup of MySQL, you have to create you own .env file by renaming and modifying the .env.example
+After the install and a complete setup of MySQL, you have to create your own .env file by renaming and modifying the .env.example
 ```
 DB_HOST=localhost
 DB_USER=user
@@ -28,7 +28,7 @@ Then start the app :
 npm start
 ```
 
-# Tutorial
+# Preview
 
 ## Landing/SignIn Page:
 ![image](https://github.com/nehkowp/cyge-repo/assets/90217593/06056b58-168b-4daf-a649-3d984eb02af3)

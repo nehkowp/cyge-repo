@@ -10,18 +10,66 @@ function isProgramInstalled(program) {
   });
 }
 
-window.electronAPI.onUserProfile((event, user) => {
+function updateUser(user) {
   const profileDiv = document.getElementById('user-info-box');
   profileDiv.innerHTML = `
-    <p><strong>Nom:</strong> ${user.nom}</p>
-    <p><strong>Prénom:</strong> ${user.prenom}</p>
-    <p><strong>Mot de passe:</strong> •••••••••••</p>
-    <p><strong>Langage Préféré:</strong> ${user.lang}</p>
+    <div class="info">
+      <p><strong>Identifiant:</strong> ${user.login}</p>
+    </div> 
+    <div class="info" data-group="nom">
+      <p><strong>Nom:</strong> ${user.nom}</p>
+      <input type="text" value="${user.nom}" hidden>
+      <img class="icon" data-group="nom" src="../assets/pencil-solid.svg"/>
+    </div> 
+    <div class="info" data-group="prenom">
+      <p><strong>Prénom:</strong> ${user.prenom}</p>
+      <input type="text" value="${user.prenom}" hidden>
+      <img class="icon" data-group="prenom" src="../assets/pencil-solid.svg"/>
+    </div>
+    <div class="info" data-group="password">
+      <p><strong>Mot de passe:</strong> •••••••••••</p>
+      <input type="text" hidden>
+      <img class="icon" data-group="password" src="../assets/pencil-solid.svg"/>
+    </div>
+    <div class="info" data-group="lang">
+      <p><strong>Langage Préféré:</strong> ${user.lang}</p>
+      <input type="text" value="${user.lang}" hidden>
+      <img class="icon" data-group="lang" src="../assets/pencil-solid.svg"/>
+    </div>
   `;
-  document.title = `Accueil | ${user.prenom}`;
+  document.title = `Accueil | ${user.login}`;
   const overlayPanel = document.querySelector('.overlay-panel.overlay-right h1');
-  overlayPanel.textContent = `Bienvenue ${user.prenom} !`;
-});
+  overlayPanel.textContent = `Bienvenue ${user.login} !`;
+  
+  document.querySelectorAll(".info img[data-group]").forEach(button => {
+    button.addEventListener("click", () => {
+      const group = button.getAttribute("data-group");
+      const groupText = document.querySelector(`div.info[data-group="${group}"] p`);
+      const groupInput = document.querySelector(`div.info[data-group="${group}"] input`);
+      groupText.toggleAttribute("hidden");
+      groupInput.toggleAttribute("hidden");
+      switch (button.getAttribute("src")) {
+        case "../assets/pencil-solid.svg":
+            button.setAttribute("src", "../assets/check-solid.svg");
+            break;
+        case "../assets/check-solid.svg":
+            button.setAttribute("src", "../assets/pencil-solid.svg");
+            window.electronAPI.submitEdit(group, groupInput.value, user.login);
+            window.electronAPI.onEditResponse((event, response) => {
+              if (!response.success) {
+                alert(response.message);
+              }else if (group !== "password") {
+                user[group] = groupInput.value;
+                updateUser(user);
+              }
+            });
+            break;
+      }
+    })
+  });
+}
+
+window.electronAPI.onUserProfile((event, user) => updateUser(user));
 
 document.addEventListener("DOMContentLoaded", async () => {
 

@@ -18,11 +18,11 @@ function setupDb() {
   connection.query(`use ${process.env.DB_NAME}`);
   
   connection.query(`CREATE TABLE IF NOT EXISTS users (
-    nom MEDIUMTEXT,
-    prenom MEDIUMTEXT,
-    login MEDIUMTEXT,
-    password MEDIUMTEXT,
-    lang MEDIUMTEXT
+    nom MEDIUMTEXT NOT NULL,
+    prenom MEDIUMTEXT NOT NULL,
+    login MEDIUMTEXT NOT NULL PRIMARY KEY,
+    password MEDIUMTEXT NOT NULL,
+    lang MEDIUMTEXT NOT NULL
   )`);
 
   return connection;
@@ -65,13 +65,14 @@ function main() {
       async (err, results) => {
         if (err) {
           console.error(err);
-          event.reply('login-response', { success: false, message: 'Database error' });
+          event.reply('login-response', { success: false, message: 'Impossible de se connecter' });
           connection.end();
         } else if (results.length > 0) {
           const user = results[0];
+          console.log(password, user.password);
           const match = await bcrypt.compare(password, user.password);
           if (match) {
-            event.reply('login-response', { success: true, message: 'Login successful', user });
+            event.reply('login-response', { success: true, message: 'connexion réussie', user });
   
             // Chargez la page de profil utilisateur avec les informations de l'utilisateur
             win.loadURL(`file://${__dirname}/src/screens/home.html`);
@@ -81,10 +82,10 @@ function main() {
               win.webContents.send('user-profile', user);
             });
           } else {
-            event.reply('login-response', { success: false, message: 'Invalid login or password' });
+            event.reply('login-response', { success: false, message: 'Identifiant ou mot de passe incorrect' });
           }
         } else {
-          event.reply('login-response', { success: false, message: 'Invalid login or password' });
+          event.reply('login-response', { success: false, message: 'Identifiant ou mot de passe incorrect' });
         }
   
         connection.end();
@@ -102,11 +103,11 @@ function main() {
       (err, results) => {
         if (err) {
           console.error(err);
-          event.reply('signup-response', { success: false, message: 'Database error' });
+          event.reply('signup-response', { success: false, message: "Impossible de créer l'utilisateur" });
         } else{
           const user = {nom, prenom, login, password, lang};
           console.log(user);
-          event.reply('signup-response', { success: true, message: 'Login successful', user });
+          event.reply('signup-response', { success: true, message: 'Connexion réussie', user });
   
           // Chargez la page de profil utilisateur avec les informations de l'utilisateur
           win.loadURL(`file://${__dirname}/src/screens/home.html`);
@@ -135,7 +136,30 @@ function main() {
     return hashedPassword;
   });
 
-  
+  ipcMain.on('submit-edit', async (event, { group, data, userLogin }) => {
+    const connection = setupDb();
+    
+    
+    let update = {};
+    console.log(group, data);
+    if (group === "password") {
+      console.log("p");
+      update[group] = await window.electronAPI.hashPassword(data);
+    } else {
+      update[group] = data;
+    }
+    connection.query(
+      'UPDATE users SET ? WHERE login = ?',
+      [update, userLogin],
+      async (err, results) => {
+        if (err) {
+          event.reply('edit-response', { success: false, message: "Impossible de modifier l'utilisateur" });
+        } else {
+          event.reply('edit-response', { success: true, message: "Modification effectuée avec succès" });
+        }
+      }
+    );
+  });
 
 }
 

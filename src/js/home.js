@@ -42,7 +42,6 @@ function updateUser(user) {
   document.title = `Accueil | ${user.login}`;
   const overlayPanel = document.querySelector('.overlay-panel.overlay-right h1');
   overlayPanel.textContent = `Bienvenue ${user.login} !`;
-  console.log(user);
   
   document.querySelectorAll(".info img[data-group]").forEach(button => {
     button.addEventListener("click", async () => {

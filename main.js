@@ -71,7 +71,6 @@ function main() {
           connection.end();
         } else if (results.length > 0) {
           const user = results[0];
-          console.log(password, user.password);
           const match = await bcrypt.compare(password, user.password);
           if (match) {
             event.reply('login-response', { success: true, message: 'connexion réussie', user });
@@ -108,7 +107,6 @@ function main() {
           event.reply('signup-response', { success: false, message: "Impossible de créer l'utilisateur" });
         } else{
           const user = {nom, prenom, login, password, lang};
-          console.log(user);
           event.reply('signup-response', { success: true, message: 'Connexion réussie', user });
   
           // Chargez la page de profil utilisateur avec les informations de l'utilisateur
@@ -142,12 +140,10 @@ function main() {
     const connection = setupDb();
     let update = {};
     update[group] = data;
-    console.log(userid, group, data, update);
     connection.query(
       'UPDATE users SET ? WHERE id = ?',
       [update, userid],
       async (err, results) => {
-        console.log("updated");
         if (err) {
           event.reply('edit-response', { success: false, message: "Impossible de modifier l'utilisateur" });
         } else {

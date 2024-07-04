@@ -108,18 +108,26 @@ function main() {
           console.error(err);
           event.reply('signup-response', { success: false, message: "Impossible de créer l'utilisateur" });
         } else{
-          const user = {nom, prenom, login, password, lang};
-          event.reply('signup-response', { success: true, message: 'Connexion réussie', user });
-  
-          // Charge la page de d'acceuil avec les informations de l'utilisateur
-          win.loadURL(`file://${__dirname}/src/screens/home.html`);
-  
-          // Écoute lorsque la page est prête pour envoyer les informations de l'utilisateur
-          win.webContents.once('did-finish-load', () => {
-            win.webContents.send('user-profile', user);
-          });
+          event.reply('signup-response', { success: true, message: 'Connexion réussie' });
+          
+          connection.query(
+            "SELECT * FROM users WHERE id = LAST_INSERT_ID()",
+            (err, results) => {
+              if (err == null && results.length > 0) {
+                const user = results[0];
+
+                // Charge la page de d'acceuil avec les informations de l'utilisateur
+                win.loadURL(`file://${__dirname}/src/screens/home.html`);
+        
+                // Écoute lorsque la page est prête pour envoyer les informations de l'utilisateur
+                win.webContents.once('did-finish-load', () => {
+                  win.webContents.send('user-profile', user);
+                });
+              }
+              connection.end();
+            }
+          );
         }
-        connection.end();
       }
     );
   });

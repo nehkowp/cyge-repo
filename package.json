@@ -22,6 +22,7 @@
   "homepage": "https://github.com/nehkowp/cyge-repo#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.10.2"
   }
 }

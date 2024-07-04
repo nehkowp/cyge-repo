@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const bcrypt = require('bcrypt');
 const mysql = require('mysql2');
 require('dotenv').config();
 
@@ -59,23 +60,29 @@ function main() {
     const connection = setupDb();
   
     connection.query(
-      'SELECT * FROM users WHERE login = ? AND password = ?',
-      [login, password],
-      (err, results) => {
+      'SELECT * FROM users WHERE login = ?',
+      [login],
+      async (err, results) => {
         if (err) {
           console.error(err);
           event.reply('login-response', { success: false, message: 'Database error' });
+          connection.end();
         } else if (results.length > 0) {
           const user = results[0];
-          event.reply('login-response', { success: true, message: 'Login successful', user });
+          const match = await bcrypt.compare(password, user.password);
+          if (match) {
+            event.reply('login-response', { success: true, message: 'Login successful', user });
   
-          // Chargez la page de profil utilisateur avec les informations de l'utilisateur
-          win.loadURL(`file://${__dirname}/src/screens/home.html`);
+            // Chargez la page de profil utilisateur avec les informations de l'utilisateur
+            win.loadURL(`file://${__dirname}/src/screens/home.html`);
   
-          // Écoutez lorsque la page est prête pour envoyer les informations de l'utilisateur
-          win.webContents.once('did-finish-load', () => {
-            win.webContents.send('user-profile', user);
-          });
+            // Écoutez lorsque la page est prête pour envoyer les informations de l'utilisateur
+            win.webContents.once('did-finish-load', () => {
+              win.webContents.send('user-profile', user);
+            });
+          } else {
+            event.reply('login-response', { success: false, message: 'Invalid login or password' });
+          }
         } else {
           event.reply('login-response', { success: false, message: 'Invalid login or password' });
         }
@@ -121,6 +128,13 @@ function main() {
       win.loadURL(`file://${__dirname}/index.html`);
     }
   });
+
+  ipcMain.handle('hash-password', async (event, password) => {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    return hashedPassword;
+  });
+
   
 
 }
